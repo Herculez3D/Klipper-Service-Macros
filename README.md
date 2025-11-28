@@ -7,6 +7,8 @@ front-and-center for easy access, guide the user through each step with
 on-screen prompts, movement, retraction, LED control, and
 heater management automatically.
 
+--------------------------------------------------------------------------------
+
 ## ✨ Features
 
 -   **One-click toolhead servicing**
@@ -23,7 +25,9 @@ heater management automatically.
     
 -   **LED support**
     -  Led_Effects Support for RGB and Neopixel Lighting
-       Repo Used : https://github.com/julianschill/klipper-led_effect/tree/master
+            Repo Used : https://github.com/julianschill/klipper-led_effect/tree/master
+       
+-------------------------------------------------------------------------
 
 ## 🧩 Macro Overview
 
@@ -45,6 +49,7 @@ If using a cold swap nozzle:
 - Uses machine partcooling fans to assist with cooldown 
 - Prompts user to change nozzle after minium temp is reached
 
+-----------------------------------------------------------------------
 
 ## ⚙️ Configuration
 
@@ -54,9 +59,8 @@ All user-adjustable settings are stored in:
 
 ## 🧩 ServiceSettings.cfg --- Variable Reference Table
 
-  --------------------------------------------------------------------------
   **Setting**                      **Description**
-  -------------------------------- -----------------------------------------
+  
 
   `Retract_Distance `              How far the filament is retracted in MM
                                    
@@ -84,13 +88,25 @@ All user-adjustable settings are stored in:
 1.  Copy both `.cfg` files into your Klipper configuration folder.
 2.  Add the following include lines to your `printer.cfg`:
 
-```
-    [include ServiceSettings.cfg]
-    [include ServiceMacros.cfg]
-```
+        [include ServiceSettings.cfg]
+        [include ServiceMacros.cfg]
+
 3.  Restart Klipper.
 4.  Set Up Config in ServiceSettings.cfg
-5.  Run macro from the UI 'Service_Position"
+5.  Run macro from the UI
+
+        Service_Position
+
+---------------------------------------------------------------------------------
+    
+## Smart Homing
+
+         _Smart_Homing 
+   
+- Can be used in place of other G28 commands in other macros.
+- A quick "home the machine if it hasnt been" script
+
+-----------------------------------------------------------------------------------
 
 ## 🙌 Contributions
 
