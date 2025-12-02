@@ -85,7 +85,7 @@ All user-adjustable settings are stored in:
 
 ## 📥 Installation
 
-You can install Klipper-Service-Macros with a this SSH command:
+You can install Klipper-Service-Macros with this SSH command:
 
 ```
 cd ~
@@ -93,16 +93,22 @@ curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/m
 chmod +x service_macros_installer.sh
 bash ./service_macros_installer.sh install
 ```
+
+Running this command will automatically install all files along with adding update manager to your `moonraker.conf`
+
+Add `[include ServiceSettings.cfg]` to your `printer.cfg`
+
+
 ### After installation, Mainsail will show:
 
 ```
 printer_data/config/
 │
-├── ServiceSettings.cfg          ← user-editable settings
+├── ServiceSettings.cfg          ← Editable settings
 │
-└── ServiceMacros/               ← symlink displaying macro files
+└── ServiceMacros/               ← Folder
       ├── ServiceMacros.cfg
-      └── ServiceSettings.cfg (template only)
+      └── ServiceSettings.cfg    (template only)
 ```
 
 ---
@@ -113,7 +119,7 @@ printer_data/config/
 **Machine → Updates → Klipper-Service-Macros → Update**
 
 ### Via SSH:
-```bash
+```
 bash ~/service_macros_installer.sh update
 ```
 
@@ -128,12 +134,13 @@ bash ~/service_macros_installer.sh uninstall
 ```
 
 This removes:
-
-- The symlink  
+  
 - The cloned repository  
 - The `update_manager` entry in Moonraker  
 
 Your user settings file is backed up and preserved.
+
+Be sure to Comment out `[include ServiceSettings.cfg]` from your `printer.cfg`
 
 ---
     
