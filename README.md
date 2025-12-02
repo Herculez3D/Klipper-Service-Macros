@@ -85,19 +85,71 @@ All user-adjustable settings are stored in:
 
 ## 📥 Installation
 
-1.  Copy both `.cfg` files into your Klipper configuration folder.
-2.  Add the following include lines to your `printer.cfg`:
+You can install Klipper-Service-Macros with a single SSH command:
 
-        [include ServiceSettings.cfg]
-        [include ServiceMacros.cfg]
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/main/service_macros_installer.sh)" install
+```
 
-3.  Restart Klipper.
-4.  Set Up Config in ServiceSettings.cfg
-5.  Run macro from the UI
+This will:
 
-        Service_Position
+- Clone the repository into your Pi at:  
+  `~/Klipper-Service-Macros/`
+- Create a symlink inside your Klipper config directory that exposes the macros:  
+  ```
+  ~/printer_data/config/ServiceMacros → ~/Klipper-Service-Macros/Configuration
+  ```
+- Install or update the user-editable settings file:  
+  ```
+  ~/printer_data/config/ServiceSettings.cfg
+  ```
+- Preserve your existing settings and automatically merge any new default options  
+- Add a Moonraker `update_manager` entry so updates appear in:  
+  **Mainsail → Machine → Updates**
 
----------------------------------------------------------------------------------
+### After installation, Mainsail will show:
+
+```
+printer_data/config/
+│
+├── ServiceSettings.cfg          ← user-editable settings
+│
+└── ServiceMacros/               ← symlink displaying macro files
+      ├── ServiceMacros.cfg
+      └── ServiceSettings.cfg (template only)
+```
+
+---
+
+## 🔄 Updating
+
+### Via Mainsail:
+**Machine → Updates → Klipper-Service-Macros → Update**
+
+### Via SSH:
+```bash
+bash ~/service_macros_installer.sh update
+```
+
+Your custom settings remain preserved, and any new options are added automatically.
+
+---
+
+## ❌ Uninstall
+
+```bash
+bash ~/service_macros_installer.sh uninstall
+```
+
+This removes:
+
+- The symlink  
+- The cloned repository  
+- The `update_manager` entry in Moonraker  
+
+Your user settings file is backed up and preserved.
+
+---
     
 ## Smart Homing
 
