@@ -1,19 +1,22 @@
 #!/bin/bash
 #
 # Klipper-Service-Macros Installer / Updater / Uninstaller
-# Uses /Configuration directory and installs symlink as "Service"
-# Repo: https://github.com/Herculez3D/Klipper-Service-Macros
+# Uses /Configuration directory and symlink "Service"
+# Auto-detects correct home directory (pi, voron, mainsail, fluidd, etc)
 #
 
 set -euo pipefail
 
-REPO_URL="https://github.com/Herculez3D/Klipper-Service-Macros.git"
-REPO_DIR="$HOME/Klipper-Service-Macros"
+# Automatically detect actual user's home directory
+USER_HOME="$(getent passwd $(whoami) | cut -d: -f6)"
 
-CONFIG_DIR="$HOME/printer_data/config"
-MACRO_DIR="$CONFIG_DIR/Service"                            # NEW FOLDER NAME
-USER_SETTINGS="$CONFIG_DIR/ServiceSettings.cfg"            # editable
-REPO_SETTINGS="$REPO_DIR/Configuration/ServiceSettings.cfg"  # template
+REPO_URL="https://github.com/Herculez3D/Klipper-Service-Macros.git"
+REPO_DIR="$USER_HOME/Klipper-Service-Macros"
+
+CONFIG_DIR="$USER_HOME/printer_data/config"
+MACRO_DIR="$CONFIG_DIR/Service"
+USER_SETTINGS="$CONFIG_DIR/ServiceSettings.cfg"
+REPO_SETTINGS="$REPO_DIR/Configuration/ServiceSettings.cfg"
 
 MOONRAKER_CONF="$CONFIG_DIR/moonraker.conf"
 UPDATE_NAME="service_macros"
@@ -75,7 +78,7 @@ create_symlink() {
 add_update_manager() {
     echo "Configuring Moonraker update manager..."
 
-    if grep -q "^\[update_manager $UPDATE_NAME\]" "$MOONRAKER_CONF" 2>/dev/null; then
+    if [[ -f "$MOONRAKER_CONF" ]] && grep -q "^\[update_manager $UPDATE_NAME\]" "$MOONRAKER_CONF"; then
         echo "Update manager entry already exists."
         return
     fi
@@ -105,7 +108,7 @@ install_macros() {
         echo "Repository already exists — updating..."
         git -C "$REPO_DIR" pull
     else
-        echo "Cloning repository..."
+        echo "Cloning repository into: $REPO_DIR"
         git clone "$REPO_URL" "$REPO_DIR"
     fi
 
@@ -113,7 +116,6 @@ install_macros() {
     merge_settings
     add_update_manager
 
-    echo "Restarting Moonraker + Klipper..."
     sudo systemctl restart moonraker || true
     sudo systemctl restart klipper || true
 
@@ -128,7 +130,7 @@ update_macros() {
     echo "=== UPDATING KLIPPER SERVICE MACROS ==="
 
     if [[ ! -d "$REPO_DIR/.git" ]]; then
-        echo "No repo found — running installer..."
+        echo "No installation detected — running installer."
         install_macros
         return
     fi
@@ -137,7 +139,6 @@ update_macros() {
     create_symlink
     merge_settings
 
-    echo "Restarting services..."
     sudo systemctl restart moonraker || true
     sudo systemctl restart klipper || true
 
@@ -170,7 +171,5 @@ case "${1:-}" in
     install) install_macros ;;
     update) update_macros ;;
     uninstall) uninstall_macros ;;
-    *)
-        echo "Usage: $0 {install|update|uninstall}"
-        ;;
+    *) echo "Usage: $0 {install|update|uninstall}" ;;
 esac
