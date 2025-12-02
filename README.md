@@ -85,28 +85,14 @@ All user-adjustable settings are stored in:
 
 ## 📥 Installation
 
-You can install Klipper-Service-Macros with a single SSH command:
+You can install Klipper-Service-Macros with a this SSH command:
 
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/main/service_macros_installer.sh)" install
 ```
-
-This will:
-
-- Clone the repository into your Pi at:  
-  `~/Klipper-Service-Macros/`
-- Create a symlink inside your Klipper config directory that exposes the macros:  
-  ```
-  ~/printer_data/config/ServiceMacros → ~/Klipper-Service-Macros/Configuration
-  ```
-- Install or update the user-editable settings file:  
-  ```
-  ~/printer_data/config/ServiceSettings.cfg
-  ```
-- Preserve your existing settings and automatically merge any new default options  
-- Add a Moonraker `update_manager` entry so updates appear in:  
-  **Mainsail → Machine → Updates**
-
+cd ~
+curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/main/service_macros_installer.sh -o service_macros_installer.sh
+chmod +x service_macros_installer.sh
+bash ./service_macros_installer.sh install
+```
 ### After installation, Mainsail will show:
 
 ```
