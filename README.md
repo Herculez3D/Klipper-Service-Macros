@@ -1,158 +1,242 @@
-# 🔧 Klipper Toolhead Service & Nozzle-Change Macros
+# 📘 **Klipper Service Macros**
+A streamlined toolhead service suite for Klipper—making nozzle changes, diagnostics, and maintenance simple, guided, and safe through the Mainsail/Fluidd interface.
 
-This repository provides a set of Klipper macros that automate and
-simplify common 3D-printer maintenance tasks, including nozzle changes,
-cold swaps, and general toolhead servicing. The macros park the toolhead
-front-and-center for easy access, guide the user through each step with
-on-screen prompts, movement, retraction, LED control, and
-heater management automatically.
+This macro package provides a clean, menu-driven maintenance system with automated filament handling, temperature management, diagnostic tests, and optional dockable probe support.
 
---------------------------------------------------------------------------------
+---
 
-## ✨ Features
+# V2.0.0 Beta Notes
 
--   **One-click toolhead servicing**
-    Automatically homes the printer, lifts Z, and parks the hotend in an
-    ideal service position.
+- Complete revamp and feature update from V1.0.0
+- added features
+    - Checks Menu (stable and operational)
+    - Probe Test (stable and operational)
+    - Wiggle Test (stable and operational)
+    - Fan Test (stable and operational)
+    - Heater Test (still in early development)
+    - Heatbreak Test (still in early development)
+- File structure revised and broken into a total of 5 files (4 macro files in a folder and 1 user settings file)
+- Focusing on a univeral code that supports as many printer set ups as possible while keeping it simple enough that anyone can use it
+- Maintaining a simple install process to reduce install errors for all users
 
--   **Fully guided workflow**
-    Integrated UI prompts walk the user through each step of swapping or
-    servicing a nozzle.
+---
 
--   **Safe & consistent nozzle changes**
-    Supports both **hot nozzle swaps** and **cold swaps**, depending on
-    your workflow.
-    
--   **LED support**
-    -  Led_Effects Support for RGB and Neopixel Lighting
-            Repo Used : https://github.com/julianschill/klipper-led_effect/tree/master
-       
--------------------------------------------------------------------------
+# 🚀 **Features**
 
-## 🧩 Macro Overview
+### 🛠️ **Service Menu**
+Running `SERVICE_POSITION` places the toolhead in an accessible position and presents a unified maintenance menu:
 
-### Service_Position
+- **Nozzle Change**  
+- **Toolhead Checks**  
+- **Return to Last Position**
 
-Prepares the printer for maintenance:
-- Homing if its gotta
-- Moves Toolhead to service position
-- Filament retraction
-- Displays start prompts
+---
 
-### Nozzle Swap
+### 🔧 **Nozzle Change**
+Supports both **hot-swap** and **cold-swap** hotends.
 
-A fully guided hot-nozzle change:
-- Prompts user to heat, loosen, and install new nozzle
-- Optioinal extra extrusion or retraction for flushing
+Includes:
 
-If using a cold swap nozzle:
-- Uses machine partcooling fans to assist with cooldown 
-- Prompts user to change nozzle after minium temp is reached
+- Automatic heating to configured temperatures  
+- Automatic filament retraction  
+- Cooling cycle for cold-swap systems  
+- LED feedback  
+- Optional automatic probe repeatability test after swap  
+- Clean UI prompt to confirm swap completion  
+- Automatic return to Service Menu
 
------------------------------------------------------------------------
+---
 
-## ⚙️ Configuration
+### 🧪 **Checks Menu**
 
-All user-adjustable settings are stored in:
+A collection of diagnostic tools to verify printer health:
 
-    ServiceSettings.cfg
+#### ✔ **Fan Test**
+- Multi-stage fan ramp (0 → 30% → 60% → 100% → down again)  
+- Clear console feedback + confirmation prompt  
 
-## 🧩 ServiceSettings.cfg --- Variable Reference Table
+#### ✔ **Probe Repeatability Test**
+- Dockable probe attach/detach support  
+- Console-only output (no UI prompt)  
+- Reports:
+  - Each probe sample  
+  - Min / Max  
+  - Average  
+  - ΔZ deviation  
+- Automatically returns to the Checks Menu
 
-  **Setting**                      **Description**
-  
+#### ✔ **Wiggle Test**
+High-speed mechanical oscillation using **machine max velocity & accel**.
 
-  `Retract_Distance `              How far the filament is retracted in MM
-                                   
+- Moves to center  
+- Applies max speed feedrate  
+- Runs 10 X-axis cycles and 10 Y-axis cycles  
+- Restores motion limits after test  
+- Returns to the service position  
+- Popup confirms completion
 
-  `Retract_Temp`                   Temperature used for retracting filament
-                                   from the melt zone.
+Perfect for detecting:
+- Loose belts  
+- Bearing noise  
+- Frame resonance
 
-  `Nozzle_Swap_temp`               Temperature used for tightening a new
-                                   nozzle during a hot swap.
+---
 
-  `Cold_Swap_Hotend`               Enables if using a  cold-nozzle replacement
-                                   hotend. (ie. Revo...)
+### ✔ **Heater Test**
+- Heats to 200°C  
+- Stabilizes briefly  
+- Turns off  
+- Lets the user review thermal behavior  
 
-  `Cold_Swap_Temp`                 Automatically cools down to this temp for
-                                   cold swap if enabled.
+---
 
-  `Leds`                           Enables LED color changes during service
-                                   routines using this plugin and Macros:
-                                   https://github.com/julianschill/klipper-led_effect/tree/master
+### ✔ **Heatbreak Cooling Test**
+- Tests heatsink effectiveness  
+- “Fan-off soak” followed by forced cooldown  
+- Useful for diagnosing underperforming cooling systems
 
-  --------------------------------------------------------------------------
+---
 
-## 📥 Installation
+# 🧭 **Workflow Overview**
 
-You can install Klipper-Service-Macros with this SSH command:
+## 1️⃣ Enter Service Mode
+```
+SERVICE_POSITION
+```
+This will:
+
+- Smart-home the printer if needed  
+- Save the current toolhead state  
+- Move to a safe maintenance position  
+- Open the **Service Menu**  
+
+---
+
+## 2️⃣ Perform Maintenance  
+
+Choose from:
+
+### 🔧 Nozzle  
+Runs the hot- or cold-swap workflow depending on your settings.
+
+### 🔍 Checks  
+Opens the diagnostic sub-menu.
+
+### ↩️ Return  
+Restores the position and exits service mode.
+
+---
+
+## 3️⃣ Exit Service Mode
+Press **Return** in the Service Menu to restore the exact previous printer state (position, movement mode, etc.).
+
+---
+
+# ⚙️ **Installation**
+
+### 1. Download the **ServiceMacros** folder  
+Place the `ServiceMacros` folder and `ServiceSettings.cfg` into your Klipper configuration directory.
+
+### 2. Add this include to `printer.cfg`  
+```
+[include ServiceSettings.cfg]
+```
+
+### 3. Restart Klipper  
+All macros will now be available.
+
+No other includes are required — the ServiceSettings file automatically loads the remaining modules.
+
+---
+
+# 🗂️ **Folder Structure**
 
 ```
-cd ~
-curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/main/service_macros_installer.sh -o service_macros_installer.sh
-chmod +x service_macros_installer.sh
-bash ./service_macros_installer.sh install
-```
+printer.cfg
+└── ServiceSettings.cfg     ← User-editable settings file
 
-Running this command will automatically install all files along with adding update manager to your `moonraker.conf`
-
-Add `[include ServiceSettings.cfg]` to your `printer.cfg`
-
-
-### After installation, Mainsail will show:
-
-```
-printer_data/config/
-│
-├── ServiceSettings.cfg          ← Editable settings
-│
-└── ServiceMacros/               ← Folder
-      ├── ServiceMacros.cfg
-      └── ServiceSettings.cfg    (template only)
+config/ServiceMacros/
+    ├── Service_Main.cfg      ← Service menu + positioning logic
+    ├── Service_Probe.cfg     ← Probe & dockable probe handling
+    ├── Service_Checks.cfg    ← Diagnostics suite (fans, wiggle, heater tests)
+    └── Service_Nozzle.cfg    ← Hot & cold nozzle change workflows
 ```
 
 ---
 
-## 🔄 Updating
+# 🔧 **Configuration**
 
-### Via Mainsail:
-**Machine → Updates → Klipper-Service-Macros → Update**
+All user settings live in:
 
-### Via SSH:
 ```
-bash ~/service_macros_installer.sh update
+ServiceSettings.cfg
 ```
 
-Your custom settings remain preserved, and any new options are added automatically.
+### **Settings Overview**
+
+| Setting | Description |
+|--------|-------------|
+| `variable_retract_distance` | Filament movement distance used during retraction/extrusion |
+| `variable_retract_temp` | Hotend temp used to retract filament |
+| `variable_nozzle_swap_temp` | Hot-swap temperature |
+| `variable_cold_swap_hotend` | Enable for cold-swap systems (e.g. Revo) |
+| `variable_cold_swap_temp` | Temperature required before a cold nozzle swap |
+| `variable_leds` | Enables LED status feedback |
+| `variable_dockable_probe` | Enables probe attach/detach handling |
+| `variable_attach_probe` | G-code used to attach the probe |
+| `variable_detach_probe` | G-code used to detach the probe |
+| `variable_autoprobe_after_nozzle_change` | Runs probe repeatability test after nozzle swap |
 
 ---
 
-## ❌ Uninstall
+# 🛡️ **Safety Features**
 
-```bash
-bash ~/service_macros_installer.sh uninstall
-```
-
-This removes:
-  
-- The cloned repository  
-- The `update_manager` entry in Moonraker  
-
-Your user settings file is backed up and preserved.
-
-Be sure to Comment out `[include ServiceSettings.cfg]` from your `printer.cfg`
+- Smart homing  
+- Heater shutdown after nozzle swap (when applicable)  
+- Temperature-based gating for safe nozzle swaps  
+- Dockable probe validation  
+- State saving + restoration  
+- LEDs for visual feedback   
+- All diagnostic tests return to safe positions automatically  
 
 ---
-    
-## Smart Homing
+
+# 💬 **Console Feedback**
+
+Every macro outputs clear `M118` lines for:
+
+- Temperatures  
+- Task progress  
+- Probe results  
+- Safety steps  
+- Movement details  
+- Diagnostic outcomes  
+
+This makes it easy to follow along during maintenance.
+
+---
+
+# 🧪 **Manual Command**
+
+Start service mode:
+```
+SERVICE_POSITION
+```
+
+ or Click the "Service Position" macro now on your Dashboard!
+
+---
+
+# Smart Homing
 
          _Smart_Homing 
    
 - Can be used in place of other G28 commands in other macros.
 - A quick "home the machine if it hasnt been" script
 
------------------------------------------------------------------------------------
+---
 
 ## 🙌 Contributions
 
 Pull requests and improvements are welcome.
+
