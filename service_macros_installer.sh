@@ -1,5 +1,5 @@
 #!/bin/bash
-# Final V2.0.0-Beta Installer (with per-file chmod)
+# Final V2.0.0-Beta Installer (Corrected)
 
 set -euo pipefail
 
@@ -100,7 +100,10 @@ install_macros(){
 }
 
 update_macros(){
-    if [[ ! -d "$REPO_DIR/.git" ]]; then install_macros; return; end
+    if [[ ! -d "$REPO_DIR/.git" ]]; then
+        install_macros
+        return
+    fi
     git -C "$REPO_DIR" fetch
     git -C "$REPO_DIR" checkout "$VERSION"
     git -C "$REPO_DIR" pull
