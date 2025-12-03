@@ -165,28 +165,104 @@ config/ServiceMacros/
 
 ---
 
-# 🔧 **Configuration**
+# 📘 ServiceSettings.cfg — User Configuration Guide
 
-All user settings live in:
+The `ServiceSettings.cfg` file is the **only configuration file users should edit** in the Klipper Service Macros package.  
+All other macro files inside `config/ServiceMacros/` are internal logic modules and should not be modified.
 
-```
-ServiceSettings.cfg
-```
+This guide explains every available setting, recommended values, and how the Service Macros system uses them.
 
-### **Settings Overview**
+---
 
-| Setting | Description |
-|--------|-------------|
-| `variable_retract_distance` | Filament movement distance used during retraction/extrusion |
-| `variable_retract_temp` | Hotend temp used to retract filament |
-| `variable_nozzle_swap_temp` | Hot-swap temperature |
-| `variable_cold_swap_hotend` | Enable for cold-swap systems (e.g. Revo) |
-| `variable_cold_swap_temp` | Temperature required before a cold nozzle swap |
-| `variable_leds` | Enables LED status feedback using this Repo: https://github.com/julianschill/klipper-led_effect/tree/master|
-| `variable_dockable_probe` | Enables probe attach/detach handling |
-| `variable_attach_probe` | G-code used to attach the probe |
-| `variable_detach_probe` | G-code used to detach the probe |
-| `variable_autoprobe_after_nozzle_change` | Runs probe repeatability test after nozzle swap |
+# ⚙️ Purpose of ServiceSettings.cfg
+
+This file centralizes all user-configurable behavior:
+
+- Movement speeds  
+- Nozzle change behavior  
+- Filament handling  
+- Probe repeatability test options  
+- LED feedback  
+- Dockable probe support  
+- Auto-probe after nozzle swap  
+
+By consolidating settings here, the macro suite can be updated or reinstalled safely without overwriting user configurations.
+
+---
+
+# 🔧 Toolhead / Filament Handling Settings
+
+| Variable | Description |
+|---------|-------------|
+| `variable_retract_distance` | Filament retract/extrude distance (mm) during service actions. |
+| `variable_retract_temp` | Temperature used to soften filament for reliable retraction. |
+| `variable_nozzle_swap_temp` | Temperature used for **hot-swap** nozzle changes. |
+| `variable_cold_swap_hotend` | Enables **cold-swap** workflow (e.g., Revo nozzles). |
+| `variable_cold_swap_temp` | Temperature before a cold nozzle can be safely removed. |
+
+---
+
+# 🌈 LED Feedback
+
+| Variable | Description |
+|---------|-------------|
+| `variable_leds` | Enables LED status effects for heating, cooling, completion, etc. |
+
+When enabled, the macros use LED cues to indicate machine state during maintenance operations.
+
+---
+
+# 🧲 Dockable Probe Support
+
+| Variable | Description |
+|---------|-------------|
+| `variable_dockable_probe` | Enables auto attach/detach logic for Klicky, Euclid, etc. |
+| `variable_attach_probe` | Custom G-code for attaching the probe. |
+| `variable_detach_probe` | Custom G-code for detaching the probe. |
+
+If you use a dockable probe, add the correct attach/detach commands here.
+
+---
+
+# 🤖 Auto-Probe After Nozzle Change
+
+| Variable | Description |
+|---------|-------------|
+| `variable_autoprobe_after_nozzle_change` | Runs a probe repeatability test automatically after completing a nozzle swap. |
+
+The nozzle menu closes before the test runs, and the printer returns to the Service Menu after completion.
+
+---
+
+# 🏃 Movement Speed Settings (mm/s)
+
+Used during **positioning**, **service movement**, and **post-test returns**.  
+These do **not** affect the Wiggle Test, which always uses machine max speed/accel.
+
+| Variable | Description |
+|---------|-------------|
+| `variable_move_speed_x` | X-axis service movement speed. |
+| `variable_move_speed_y` | Y-axis service movement speed. |
+| `variable_move_speed_z` | Z-axis service movement speed. |
+
+These values are converted internally to mm/min for use with G-code `F` feedrate commands.
+
+---
+
+# 📏 Probe Repeatability Test Configuration
+
+| Variable | Description |
+|---------|-------------|
+| `variable_probe_samples` | Number of probe samples taken during `_PROBE_TEST`. |
+
+The test outputs:
+
+- Each measurement  
+- Average  
+- Minimum  
+- Maximum  
+- Deviation (ΔZ)  
+- All values printed to 4 decimal places  
 
 ---
 
