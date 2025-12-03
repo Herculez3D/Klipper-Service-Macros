@@ -99,7 +99,7 @@ You can install Klipper-Service-Macros with this SSH command:
 
 ```
 cd ~
-curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/main/service_macros_installer.sh -o service_macros_installer.sh
+curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/V1.0.0-Release/service_macros_installer.sh -o service_macros_installer.sh
 chmod +x service_macros_installer.sh
 bash ./service_macros_installer.sh install
 ```
