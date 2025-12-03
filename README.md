@@ -89,51 +89,16 @@ Perfect for detecting:
 - Bearing noise  
 - Frame resonance
 
-### ✔ **Heater Test**
+#### ✔ **Heater Test**
 - Heats to 200°C  
 - Stabilizes briefly  
 - Turns off  
 - Lets the user review thermal behavior  
 
-### ✔ **Heatbreak Cooling Test**
+#### ✔ **Heatbreak Cooling Test**
 - Tests heatsink effectiveness  
 - “Fan-off soak” followed by forced cooldown  
 - Useful for diagnosing underperforming cooling systems
-
----
-
-# 🧭 **Workflow Overview**
-
-## 1️⃣ Enter Service Mode
-```
-SERVICE_POSITION
-```
-This will:
-
-- Smart-home the printer if needed  
-- Save the current toolhead state  
-- Move to a safe maintenance position  
-- Open the **Service Menu**  
-
----
-
-## 2️⃣ Perform Maintenance  
-
-Choose from:
-
-### 🔧 Nozzle  
-Runs the hot- or cold-swap workflow depending on your settings.
-
-### 🔍 Checks  
-Opens the diagnostic sub-menu.
-
-### ↩️ Return  
-Restores the position and exits service mode.
-
----
-
-## 3️⃣ Exit Service Mode
-Press **Return** in the Service Menu to restore the exact previous printer state (position, movement mode, etc.).
 
 ---
 
@@ -155,12 +120,12 @@ Add `[include ServiceSettings.cfg]` to your `printer.cfg`
 
 ---
 
-## 🔄 Updating
+### 🔄 Updating
 
 ### Via Mainsail:
 **Machine → Updates → Klipper-Service-Macros → Update**
 
-### Via SSH:
+#### Via SSH:
 ```
 bash ~/service_macros_installer.sh update
 ```
@@ -169,9 +134,10 @@ Your custom settings remain preserved, and any new options are added automatical
 
 ---
 
-## ❌ Uninstall
+### ❌ Uninstall
 
-```bash
+#### Via SSH:
+```
 bash ~/service_macros_installer.sh uninstall
 ```
 
@@ -216,7 +182,7 @@ ServiceSettings.cfg
 | `variable_nozzle_swap_temp` | Hot-swap temperature |
 | `variable_cold_swap_hotend` | Enable for cold-swap systems (e.g. Revo) |
 | `variable_cold_swap_temp` | Temperature required before a cold nozzle swap |
-| `variable_leds` | Enables LED status feedback |
+| `variable_leds` | Enables LED status feedback using this Repo: https://github.com/julianschill/klipper-led_effect/tree/master|
 | `variable_dockable_probe` | Enables probe attach/detach handling |
 | `variable_attach_probe` | G-code used to attach the probe |
 | `variable_detach_probe` | G-code used to detach the probe |
@@ -233,21 +199,6 @@ ServiceSettings.cfg
 - State saving + restoration  
 - LEDs for visual feedback   
 - All diagnostic tests return to safe positions automatically  
-
----
-
-# 💬 **Console Feedback**
-
-Every macro outputs clear `M118` lines for:
-
-- Temperatures  
-- Task progress  
-- Probe results  
-- Safety steps  
-- Movement details  
-- Diagnostic outcomes  
-
-This makes it easy to follow along during maintenance.
 
 ---
 
