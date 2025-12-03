@@ -19,6 +19,8 @@ This macro package provides a clean, menu-driven maintenance system with automat
 - Focusing on a univeral code that supports as many printer set ups as possible while keeping it simple enough that anyone can use it
 - Maintaining a simple install process to reduce install errors for all users
 
+  *USE AT YOUR OWN RISK*
+
 ---
 
 # 🚀 **Features**
