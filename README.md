@@ -134,20 +134,50 @@ Press **Return** in the Service Menu to restore the exact previous printer state
 
 ---
 
-# ⚙️ **Installation**
+# 📥 Installation
 
-### 1. Download the **ServiceMacros** folder  
-Place the `ServiceMacros` folder and `ServiceSettings.cfg` into your Klipper configuration directory.
+You can install Klipper-Service-Macros with this SSH command:
 
-### 2. Add this include to `printer.cfg`  
 ```
-[include ServiceSettings.cfg]
+cd ~
+curl -fsSL https://raw.githubusercontent.com/Herculez3D/Klipper-Service-Macros/V2.0.0-Beta/service_macros_installer.sh -o service_macros_installer.sh
+chmod +x service_macros_installer.sh
+bash ./service_macros_installer.sh install
+
 ```
 
-### 3. Restart Klipper  
-All macros will now be available.
+Running this command will automatically install all files along with adding update manager to your `moonraker.conf`
 
-No other includes are required — the ServiceSettings file automatically loads the remaining modules.
+Add `[include ServiceSettings.cfg]` to your `printer.cfg`
+
+---
+
+## 🔄 Updating
+
+### Via Mainsail:
+**Machine → Updates → Klipper-Service-Macros → Update**
+
+### Via SSH:
+```
+bash ~/service_macros_installer.sh update
+```
+
+Your custom settings remain preserved, and any new options are added automatically.
+
+---
+
+## ❌ Uninstall
+
+```bash
+bash ~/service_macros_installer.sh uninstall
+```
+
+This removes:
+  
+- The cloned repository  
+- The `update_manager` entry in Moonraker  
+
+Your user settings file is backed up and preserved.
 
 ---
 
@@ -230,9 +260,9 @@ SERVICE_POSITION
 ---
 
 # Smart Homing
-
-         _Smart_Homing 
-   
+```
+_Smart_Homing
+```
 - Can be used in place of other G28 commands in other macros.
 - A quick "home the machine if it hasnt been" script
 
